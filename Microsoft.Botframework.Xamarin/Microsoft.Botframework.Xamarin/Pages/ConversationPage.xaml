@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dataTemplates="clr-namespace:Microsoft.Botframework.Xamarin.DataTemplates"
+             xmlns:effects="clr-namespace:Microsoft.Botframework.Xamarin.Effects"
+             xmlns:behaviors="clr-namespace:Microsoft.Botframework.Xamarin.Behaviors"
+             xmlns:customViews="clr-namespace:Microsoft.Botframework.Xamarin.CustomViews"
+             xmlns:converters="clr-namespace:Microsoft.Botframework.Xamarin.Converters"
+             xmlns:helpers="clr-namespace:Microsoft.Botframework.Xamarin.Helpers"
+             xmlns:md="clr-namespace:Xam.Forms.Markdown;assembly=Xam.Forms.MarkdownView"
+             x:Class="Microsoft.Botframework.Xamarin.Pages.ConversationPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StringToColorConverter x:Key="StringToColorConverter"></converters:StringToColorConverter>
+            <converters:IdToSendStatusConverter x:Key="IdToSendStatusConverter"></converters:IdToSendStatusConverter>
+            <helpers:SentMarkdownTheme x:Key="SentMarkdownTheme" />
+            <DataTemplate x:Key="senderActivityTemplate">
+                <ViewCell IsEnabled="False">
+                    <Grid Padding="10, 2, 10, 2">
+                        <Frame HasShadow="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="5" BackgroundColor="{StaticResource PrimaryColor}" CornerRadius="15">
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <md:MarkdownView Markdown="{Binding Text}"  Theme="{StaticResource SentMarkdownTheme}" />
+                                    <Label Text="{Binding Id,Converter={StaticResource IdToSendStatusConverter}}" FontSize="Micro" HorizontalOptions="EndAndExpand"  TextColor="White" />
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="receiverActivityTemplate">
+                <ViewCell>
+                    <Grid Padding="10, 2, 10, 2">
+                        <Frame HasShadow="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="5" CornerRadius="15">
+                            <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                <md:MarkdownView Markdown="{Binding Text}" />
+                                <Label Text="{Binding From.Name}"  FontSize="Micro" HorizontalOptions="EndAndExpand" />
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="adaptiveCardsTemplate">
+                <ViewCell>
+                    <customViews:AdaptiveCardLayout />
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="sentPhotoAttachmentTemplate">
+                <ViewCell>
+                    <Grid Padding="10, 2, 10, 2">
+                        <Frame HasShadow="True"  Margin="5" CornerRadius="15" BackgroundColor="{StaticResource PrimaryColor}">
+                            <StackLayout Orientation="Vertical">
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" HeightRequest="200">
+                                    <Image Source="{Binding Path}" Aspect="AspectFit"></Image>
+                                </StackLayout>
+                                <Label Text="{Binding From.Name}"  FontSize="Micro" HorizontalOptions="EndAndExpand" />
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            <dataTemplates:ActivityDataTemplateSelector x:Key="activityDataTemplateSelector"
+                SenderTemplate="{StaticResource senderActivityTemplate}"
+                ReceiverTemplate="{StaticResource receiverActivityTemplate}"
+                AdaptiveCardsTemplate="{StaticResource adaptiveCardsTemplate}"
+                SentPhotoAttachmentTemplate="{StaticResource sentPhotoAttachmentTemplate}" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid RowSpacing="0"
+              ColumnSpacing="0"
+              Padding="0, 2, 0, 2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <customViews:ChatListView x:Name="ChatListView"
+                      ItemsSource="{Binding Messages}"
+                      ItemTemplate="{StaticResource activityDataTemplateSelector}"
+                      SeparatorVisibility="None"
+                      HasUnevenRows="True">
+                <customViews:ChatListView.Effects>
+                    <effects:ListViewScrollToBottomEffect />
+                    <effects:ListViewStackFromBottomEffect />
+                </customViews:ChatListView.Effects>
+            </customViews:ChatListView>
+            <StackLayout Orientation="Horizontal"
+                         Grid.Row="1"
+                         Padding="10"
+                         BackgroundColor="#EFEFEF">
+                <Entry HorizontalOptions="FillAndExpand"
+                       HeightRequest="40"
+                       Placeholder="Enter your message"
+                       Text="{Binding Message}"
+                       x:Name="MessageEntry">
+                    <Entry.Effects>
+                        <effects:KeyboardDoneButtonEffect />
+                    </Entry.Effects>
+                </Entry>
+                <Label Text="➤"
+                       HeightRequest="40"
+                       WidthRequest="25"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"
+                       IsEnabled="{Binding IsSendButtonEnabled}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SendMessageCommand}" />
+                    </Label.GestureRecognizers>
+                    <Label.Behaviors>
+                        <behaviors:EnabledBehavior />
+                    </Label.Behaviors>
+                </Label>
+                <Label Text="📷"
+                       HeightRequest="40"
+                       WidthRequest="25"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding PhotoCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
