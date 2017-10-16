@@ -17,7 +17,7 @@
             <DataTemplate x:Key="senderActivityTemplate">
                 <ViewCell IsEnabled="False">
                     <Grid Padding="10, 2, 10, 2">
-                        <Frame HasShadow="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="5" BackgroundColor="{StaticResource PrimaryColor}" CornerRadius="15">
+                        <Frame HasShadow="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="5" BackgroundColor="Blue" CornerRadius="15">
                             <StackLayout Orientation="Horizontal">
                                 <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                                     <md:MarkdownView Markdown="{Binding Text}"  Theme="{StaticResource SentMarkdownTheme}" />

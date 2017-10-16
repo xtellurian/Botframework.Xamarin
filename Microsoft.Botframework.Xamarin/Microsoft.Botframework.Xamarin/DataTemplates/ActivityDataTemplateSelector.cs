@@ -28,7 +28,7 @@ namespace Microsoft.Botframework.Xamarin.DataTemplates
                 }
             }
 
-            return ((Activity)item).From.Name == "Dev Tester" ? SenderTemplate : ReceiverTemplate;
+            return ((Activity)item).From.Id == "DevTestUser" ? SenderTemplate : ReceiverTemplate;
         }
     }
 }
