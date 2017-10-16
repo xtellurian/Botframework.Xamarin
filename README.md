@@ -15,6 +15,7 @@ We've included a few useful renderers and effects that can be used in any Xamari
 ## To Do
 - [ ] Make sure iOS example builds
 - [ ] Get UWP app building
+- [ ] Enable Hero Cards
 - [ ] Move to Adaptive Cards NuGet Package
 - [ ] Implement Websockets
 - [ ] Implement Typing... 
