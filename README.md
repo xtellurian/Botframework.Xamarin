@@ -1,6 +1,10 @@
 # Botframework.Xamarin
 This is an example app for using the [C# DirectLine Client](https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/core-DirectLine) with native controls in a Xamarin Forms Project
 
+## Warning
+
+This project was created with an alpha version of Adaptive Cards renderer. It's now deprecated.
+
 # Features
 
 ## Dotnet Standard
